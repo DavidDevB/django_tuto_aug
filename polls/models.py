@@ -29,3 +29,10 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ["pub_date"]
     ordering = ["pub_date"]
     search_fields = ["question_text"]
+
+
+class ChoiceAdmin(admin.ModelAdmin):
+    list_display = ("question", "choice_text", "votes")
+    list_filter = ["question"]
+    ordering = ["question", "votes"]
+    search_fields = ["choice_text"]

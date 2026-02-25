@@ -1,0 +1,8 @@
+
+<span>{{question.question_text}}</span>
+<p>{{question.id}}</p><p>{{ question.pub_date }}</p>
+    
+{% for choice in question.choice_set.all %}
+    <p>{{ choice.choice_text }}: {{ choice.votes }} : {{ choice.get_percentage }}%</p>
+{% endfor %}
+

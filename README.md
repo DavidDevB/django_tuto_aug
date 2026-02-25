@@ -171,4 +171,15 @@ donne:
 
 ## 3.2 Exercices sur les parties 3 et 4
 
+### 3.2.1
+`<p>{{ question.pub_date }}</p>`
+
+### 3.2.2
+J'ai ajouté à `views.py` la vue `all`.
+Ensuite j'ai ajouté l'url `all`à `urls.py`.
+Enfin j'ai créé le template `all.html`.
+
+### 3.2.3
+
+
 

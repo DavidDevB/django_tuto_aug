@@ -23,6 +23,13 @@ class Choice(models.Model):
     def __str__(self):
         return self.choice_text
     
+    def get_percentage(self):
+        total_votes = self.question.choice_set.aggregate(models.Sum("votes"))["votes__sum"] or 0
+        if total_votes > 0:
+            return (self.votes / total_votes) * 100
+        else:
+            return 0
+    
 
 class QuestionAdmin(admin.ModelAdmin):
     list_display = ("question_text", "pub_date", "was_published_recently")

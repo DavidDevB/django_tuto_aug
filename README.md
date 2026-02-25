@@ -180,6 +180,56 @@ Ensuite j'ai ajouté l'url `all`à `urls.py`.
 Enfin j'ai créé le template `all.html`.
 
 ### 3.2.3
+Ajout de:
+```
+def get_percentage(self):
+        total_votes = self.question.choice_set.aggregate(models.Sum("votes"))["votes__sum"] or 0
+        if total_votes > 0:
+            return (self.votes / total_votes) * 100
+        else:
+            return 0
+```
+au model Choice puis intégration dans le gabarit frequency.html: {{ choice.get_percentage }}
 
+### 3.2.4
+Ajout des méthodes dans models.py (Question):
 
+```
+@property
+    def total_votes(self):
+        return self.choice_set.aggregate(models.Sum("votes"))["votes__sum"] or 0
+    
+@property
+def average_votes_per_question(self):
+    total_questions = Question.objects.count()
+    if total_questions > 0:
+        return self.total_votes / total_questions
+    else:
+        return 0
+```
+Ajout de get_context_data dans views.py:
+```
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_questions'] = Question.objects.count()
+        context['total_votes'] = Choice.objects.aggregate(
+            total=models.Sum("votes")
+        )["total"] or 0
+        context['total_choices'] = Choice.objects.count()
+        return context
+```
+
+statistics.html:
+```
+<p>Total questions: {{ questions.count }}</p>
+<p>Total choices: {{ total_choices }}</p>
+{% for question in questions %}
+    <p>{{ question.question_text }}</p>
+    <p>Total votes: {{ question.total_votes }}</p>
+    <p>Average votes per question: {{ question.average_votes_per_question }}</p>
+    {% for choice in question.choices.all %}
+        <p>{{ choice.choice_text }}: {{ choice.votes }}</p>
+    {% endfor %}
+{% endfor %}
+```
 

@@ -1,3 +1,5 @@
+<a href="{% url 'polls:all' %}">View All Questions</a>
+<a href="{% url 'polls:statistics' question.id %}">View Frequency</a>
 {% if latest_question_list %}
     <ul>
     {% for question in latest_question_list %}

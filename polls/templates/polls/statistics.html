@@ -1,0 +1,11 @@
+<p>Total questions: {{ questions.count }}</p>
+<p>Total choices: {{ total_choices }}</p>
+{% for question in questions %}
+    <p>{{ question.question_text }}</p>
+    <p>Total votes: {{ question.total_votes }}</p>
+    <p>Average votes per question: {{ question.average_votes_per_question }}</p>
+    {% for choice in question.choices.all %}
+        <p>{{ choice.choice_text }}: {{ choice.votes }}</p>
+    {% endfor %}
+{% endfor %}
+

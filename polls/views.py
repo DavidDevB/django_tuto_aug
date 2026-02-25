@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
+from django.db import models
 
 from .models import Question, Choice
 
@@ -57,3 +58,23 @@ def vote(request, question_id):
 class FrequencyView(generic.DetailView):
     model = Question
     template_name = "polls/frequency.html"
+
+class StatisticsView(generic.ListView):
+    template_name = "polls/statistics.html"
+    context_object_name = "questions"
+
+    def get_queryset(self):
+        """Return all published questions."""
+        return Question.objects.order_by("-pub_date")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_questions'] = Question.objects.count()
+        context['total_votes'] = Choice.objects.aggregate(
+            total=models.Sum("votes")
+        )["total"] or 0
+        context['total_choices'] = Choice.objects.count()
+        return context
+
+    
+

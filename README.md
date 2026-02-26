@@ -232,4 +232,30 @@ statistics.html:
     {% endfor %}
 {% endfor %}
 ```
+### 3.2.5
+J'ai ajouté l'ur de `form` au path et créé le fichier `form.html` avec la view en conséquence.
 
+### 3.2.6
+les méthodes get et post ont été ajoutées a views.py (QuestionFormView):
+```
+def get(self, request):
+        return render(request, self.template_name)
+
+def post(self, request, *args, **kwargs):
+
+    question_text = request.POST.get("question_text", "")
+    choice1_text = request.POST.get("choice1", "")
+    choice2_text = request.POST.get("choice2", "")
+    choice3_text = request.POST.get("choice3", "")
+    choice4_text = request.POST.get("choice4", "")
+    choice5_text = request.POST.get("choice5", "")
+    pub_date = request.POST.get("pub_date", "")
+
+    question = Question.objects.create(question_text=question_text, pub_date=pub_date)
+    
+    for choice_text in [choice1_text, choice2_text, choice3_text, choice4_text, choice5_text]:
+        if choice_text:
+            Choice.objects.create(question=question, choice_text=choice_text)
+    
+    return HttpResponseRedirect(reverse("polls:results", args=(question.pk,)))
+```

@@ -233,7 +233,7 @@ statistics.html:
 {% endfor %}
 ```
 ### 3.2.5
-J'ai ajouté l'ur de `form` au path et créé le fichier `form.html` avec la view en conséquence.
+J'ai ajouté l'url de `form` au path et créé le fichier `form.html` avec la view en conséquence.
 
 ### 3.2.6
 les méthodes get et post ont été ajoutées a views.py (QuestionFormView):
@@ -259,3 +259,4 @@ def post(self, request, *args, **kwargs):
     
     return HttpResponseRedirect(reverse("polls:results", args=(question.pk,)))
 ```
+# 4 Tutoriel augmenté parties 5,6 et 7 et 8

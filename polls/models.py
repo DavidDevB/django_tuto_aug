@@ -11,6 +11,8 @@ class Question(models.Model):
 
     def __str__(self):
         return self.question_text
+    
+    def __repr__(self): return "<Question: {}>".format(self.question_text)
 
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1) and self.pub_date <= timezone.now()

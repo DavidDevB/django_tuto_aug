@@ -1,0 +1,58 @@
+{% load static %}
+{% block content %}
+{% block extra_css %}
+<style>
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        background-image: url("/static/assets/forest.jpg");
+        background-size: cover;
+        border-radius: 8px;
+        height:100%;
+        color: white;
+    }
+</style>
+{% endblock %}
+<div class="form-container">
+    <h1>Add New Question</h1>
+    
+    <form method="post" action="{% url 'polls:form' %}" style="display: flex; flex-direction: column; gap: 1rem;">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="question_text">Question:</label>
+            <input type="text" id="question_text" name="question_text" value="{{ question_text }}" required>
+        </div>
+        <div style="display:flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; flex-direction: row;">
+                    <label for="choice1">Choice 1:</label>
+                    <input type="text" id="choice1" name="choice1" value="{{ choice_1 }}" required>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                    <label for="choice2">Choice 2:</label>
+                    <input type="text" id="choice2" name="choice2" value="{{ choice_2 }}" required>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                    <label for="choice3">Choice 3:</label>
+                    <input type="text" id="choice3" name="choice3" value="{{ choice_3 }}" required>
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                    <label for="choice4">Choice 4:</label>
+                    <input type="text" id="choice4" name="choice4" value="{{ choice_4 }}">
+            </div>
+            <div style="display: flex; flex-direction: row;">
+                    <label for="choice5">Choice 5:</label>
+                    <input type="text" id="choice5" name="choice5" value="{{ choice_5 }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="pub_date">Publication Date:</label>
+            <input type="datetime-local" id="pub_date" name="pub_date" value="{{ pub_date }}" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100px;" >Add Question</button>
+        <a href="{% url 'polls:index' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -2,8 +2,10 @@ from django.db.models import F
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.views import generic
+from django.views import generic, View
 from django.db import models
+from django import forms
+
 
 from .models import Question, Choice
 
@@ -77,5 +79,29 @@ class StatisticsView(generic.ListView):
         context['most_popular'] = Question.objects.annotate(votes_sum=models.Sum("choice__votes")).order_by("-votes_sum").first()
         return context
 
-    
+class QuestionFormView(View):
+    model = Question
+    template_name = "polls/form.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+
+        question_text = request.POST.get("question_text", "")
+        choice1_text = request.POST.get("choice1", "")
+        choice2_text = request.POST.get("choice2", "")
+        choice3_text = request.POST.get("choice3", "")
+        choice4_text = request.POST.get("choice4", "")
+        choice5_text = request.POST.get("choice5", "")
+        pub_date = request.POST.get("pub_date", "")
+
+        question = Question.objects.create(question_text=question_text, pub_date=pub_date)
+        
+        for choice_text in [choice1_text, choice2_text, choice3_text, choice4_text, choice5_text]:
+            if choice_text:
+                Choice.objects.create(question=question, choice_text=choice_text)
+        
+        return HttpResponseRedirect(reverse("polls:results", args=(question.pk,)))
+
 

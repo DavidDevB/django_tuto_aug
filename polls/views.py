@@ -74,6 +74,7 @@ class StatisticsView(generic.ListView):
             total=models.Sum("votes")
         )["total"] or 0
         context['total_choices'] = Choice.objects.count()
+        context['most_popular'] = Question.objects.annotate(votes_sum=models.Sum("choice__votes")).order_by("-votes_sum").first()
         return context
 
     

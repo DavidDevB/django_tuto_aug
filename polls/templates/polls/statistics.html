@@ -4,8 +4,10 @@
     <p>{{ question.question_text }}</p>
     <p>Total votes: {{ question.total_votes }}</p>
     <p>Average votes per question: {{ question.average_votes_per_question }}</p>
-    {% for choice in question.choices.all %}
+    {% for choice in question.choice_set.all %}
         <p>{{ choice.choice_text }}: {{ choice.votes }}</p>
     {% endfor %}
 {% endfor %}
+<p>Most popular question: {{ most_popular.question_text }}</p>
+<p>Total votes for most popular question: {{ most_popular.votes_sum }}</p>
 

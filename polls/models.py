@@ -30,6 +30,18 @@ class Question(models.Model):
     @property
     def total_choices(self):
         return self.choice_set.count()
+    
+    @property
+    def most_popular_question(self):
+        return Question.objects.annotate(votes_sum=models.Sum("choice__votes")).order_by("-votes_sum").first()
+    
+    @property
+    def less_popular_question(self):
+        return Question.objects.annotate(votes_sum=models.Sum("choice__votes")).order_by("votes_sum").first()
+    
+    @property
+    def last_registered_question(self):
+        return Question.objects.order_by("-pub_date").first()
 
 class Choice(models.Model):
     question: models.ForeignKey = models.ForeignKey(Question, on_delete=models.CASCADE)

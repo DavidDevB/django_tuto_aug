@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Ajouter une question{% endblock %}
+
+{% block header %}
+    <img src="{% static 'assets/add_banner.jpg' %}" alt="Ajouter une nouvelle question">
+{% endblock %}
+
+{% block main %}
+    <h1>Add New Question</h1>
+    
+    <a href="{% url 'polls:form' %}">Add Question</a>
+    <a href="{% url 'polls:index' %}">Cancel</a>
+    
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block main %}
+    <h1>Bienvenue</h1>
+    <p>Ceci est la page d'accueil de mon amazing site.</p>
+    <a href="{% url 'home:login' %}">Se connecter</a>
+     <a href="{% url 'polls:index' %}">Continuer en tant que visiteur</a>
+{% endblock %}

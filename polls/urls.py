@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib import admin
 
 from . import views
 
@@ -12,4 +13,6 @@ urlpatterns = [
     path("<int:pk>/frequency/", views.FrequencyView.as_view(), name="frequency"),
     path("statistics/", views.StatisticsView.as_view(), name="statistics"),
     path("form/", views.QuestionFormView.as_view(), name="form"),
+    path("your-name/", views.get_name, name="get_name"),
+    path('admin/', admin.site.urls),
 ]

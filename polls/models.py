@@ -14,8 +14,14 @@ class Question(models.Model):
     
     def __repr__(self): return "<Question: {}>".format(self.question_text)
 
+    @admin.display(
+        boolean=True,
+        ordering="pub_date",
+        description="Published recently?",
+    )
     def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1) and self.pub_date <= timezone.now()
+        now = timezone.now()
+        return now - datetime.timedelta(days=1) <= self.pub_date <= now
     
     @property
     def total_votes(self):
@@ -34,7 +40,7 @@ class Question(models.Model):
         return self.choice_set.count()
     
     @property
-    def most_popular_question(self):
+    def most_popular_question(self):        
         return Question.objects.annotate(votes_sum=models.Sum("choice__votes")).order_by("-votes_sum").first()
     
     @property

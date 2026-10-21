@@ -1,8 +1,8 @@
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form id="vote-form">
 {% csrf_token %}
 <fieldset>
     <legend><h1>{{ question.question_text }}</h1></legend>
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    <p id="error-message"><strong></strong></p>
     {% for choice in question.choice_set.all %}
         <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
         <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
@@ -10,3 +10,33 @@
 </fieldset>
 <input type="submit" value="Vote">
 </form>
+
+<script>
+// Le vote est envoyé à l'API (POST /api/questions/<id>/vote/), puis on affiche les résultats.
+document.getElementById("vote-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const errorMessage = document.querySelector("#error-message strong");
+    const selected = form.querySelector('input[name="choice"]:checked');
+
+    if (!selected) {
+        errorMessage.textContent = "You didn't select a choice.";
+        return;
+    }
+
+    const response = await fetch("{% url 'question-vote' question.id %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": form.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+        body: JSON.stringify({ choice: Number(selected.value) }),
+    });
+
+    if (response.ok) {
+        window.location.href = "{% url 'polls:results' question.id %}";
+    } else {
+        errorMessage.textContent = "Le vote n'a pas pu être enregistré.";
+    }
+});
+</script>

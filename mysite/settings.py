@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,13 @@ INTERNAL_IPS = [
 LOGIN_URL = 'home:index'            # où rediriger un visiteur non connecté
 LOGIN_REDIRECT_URL = 'polls:index'   # où l'envoyer après connexion réussie
 LOGOUT_REDIRECT_URL = 'home:index'  # où l'envoyer après déconnexion
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    # lecture pour tous, écriture réservée aux utilisateurs connectés
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
+}
